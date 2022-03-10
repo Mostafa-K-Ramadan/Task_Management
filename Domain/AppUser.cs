@@ -8,6 +8,8 @@ namespace Domain
 {
     public class AppUser : IdentityUser
     {
+        public string FName { get; set; } = string.Empty;
+        public string LName { get; set; } = string.Empty;
         public ICollection<Task>? Tasks { get; set; }
     }
 }

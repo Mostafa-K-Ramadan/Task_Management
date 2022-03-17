@@ -1,5 +1,5 @@
 
-namespace API.DTOs
+namespace Application.DTOs
 {
     public class RegisterDTO
     {

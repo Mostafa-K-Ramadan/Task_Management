@@ -1,4 +1,4 @@
-using API.DTOs;
+using Application.DTOs;
 using API.Services;
 using Domain;
 using Microsoft.AspNetCore.Identity;
@@ -42,7 +42,7 @@ namespace API.Controllers
             var user = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
 
-            if (user == null) return Unauthorized("Invalid email");
+            if (user == null) return Unauthorized("Invalid Email");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
@@ -51,7 +51,7 @@ namespace API.Controllers
                 return Ok(CreateUserObject(user));
             }
 
-            return Unauthorized("Invalid password");
+            return Unauthorized("Invalid Password");
         } 
 
         [HttpPost("Register")]
@@ -59,18 +59,19 @@ namespace API.Controllers
         {
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                return BadRequest("Invalid Email");
+                return BadRequest("Duplicated Email");
             }
 
             var user = new AppUser
             {
-                UserName = registerDto.FName + "_" + registerDto.LName,
+                FName = registerDto.FName,
+                LName = registerDto.LName,
                 Email = registerDto.Email
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Pasword);
 
-            if (!result.Succeeded) return BadRequest(result.Errors);
+            if (!result.Succeeded) return BadRequest("Registeration Process Failed !");
 
             return Ok(CreateUserObject(user));
         }

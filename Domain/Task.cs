@@ -23,6 +23,7 @@ namespace Domain
         public DateTime Date { get; set; }
 
         public AppUser User { get; set; } = null!;
+
         public string UserId { get; set; } = string.Empty;
     }
 }

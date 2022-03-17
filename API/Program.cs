@@ -1,15 +1,24 @@
 using API.Extensions;
 using API.Services;
-using Domain;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
+using Application.Task;
+using MediatR;
+using Infrastructure.Security;
+using Application.Interfaces;
+using Application.Core;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+            .AddFluentValidation( _config => 
+                {
+                    _config.RegisterValidatorsFromAssemblyContaining<TaskValidator>();
+                }
+            );
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -20,10 +29,18 @@ builder.Services.AddCors(opt => {
     });
 });
 
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddMediatR(typeof(GetAll).Assembly);
+
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
 // Add all database services to our program
 builder.Services.AddDatabaseServices(builder.Configuration);
 
 builder.Services.AddScoped<IToken, AccountToken>();
+
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
 // Add all identity services to our program
 builder.Services.AddIdentityServices(builder.Configuration);
@@ -39,6 +56,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -16,6 +16,9 @@ builder.Services.AddControllers()
                 {
                     _config.RegisterValidatorsFromAssemblyContaining<TaskValidator>();
                 }
+            )
+            .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
 

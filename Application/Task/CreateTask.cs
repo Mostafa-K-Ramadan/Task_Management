@@ -18,13 +18,13 @@ namespace Application.Task
     public class CreateTask
     {
         
-        public class Command : IRequest<string>
+        public class Command : IRequest<TaskDTO>
         {
             public TaskDTO Task { get; set; } 
 
         }
 
-        public class Handler : IRequestHandler<Command, string>
+        public class Handler : IRequestHandler<Command, TaskDTO>
         {
             private readonly DataContext _dbContext;
             private readonly IUserAccessor _userAccessor;
@@ -36,26 +36,25 @@ namespace Application.Task
                 _userAccessor = userAccessor;
             }
 
-            public async Task<string> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<TaskDTO> Handle(Command request, CancellationToken cancellationToken)
             {
                 AppUser user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == _userAccessor.GetUserId());              
                 
                 if (user == null)
-                    return "Account Loading Failed";
+                    return null;
 
                 var task = _mapper.Map<Domain.Task>(request.Task);
 
                 task.User = user;
                 task.UserId = user.Id;
 
-                //_dbContext.Branches.Add(request.Branch);
+                _dbContext.Tasks.Add(task);
+                var result = await _dbContext.SaveChangesAsync() > 0;
 
-                //var result = await _dbContext.SaveChangesAsync() > 0;
-
-                if (task != null)
-                    return "Task Created";
+                if (result)
+                    return _mapper.Map<TaskDTO>(task);
                 
-                return user.Email;
+                return null;
             }
 
         }

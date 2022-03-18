@@ -9,7 +9,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<Domain.Task, Domain.Task>();
-            CreateMap<TaskDTO, Domain.Task>();
+            CreateMap<TaskDTO, Domain.Task>().ReverseMap();
         }
     }
 }

@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DTOs;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -11,21 +14,23 @@ namespace Application.Task
     public class GetAll
     {
         
-        public class Query : IRequest<List<Domain.Task>>
+        public class Query : IRequest<List<TaskDTO>>
         {
         }
 
-        public class Handler : IRequestHandler<Query, List<Domain.Task>>
+        public class Handler : IRequestHandler<Query, List<TaskDTO>>
         {
             private readonly DataContext _dbContext;
+            private readonly IMapper _mapper;
 
             //private readonly IUserAccessor _userAccessor;
-            public Handler(DataContext dbContext)
+            public Handler(DataContext dbContext, IMapper mapper)
             {
+                _mapper = mapper;
                 _dbContext = dbContext;
             }
 
-            public async Task<List<Domain.Task>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<TaskDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
                 /*var userId = _userAccessor.GetUserId();
 
@@ -34,9 +39,10 @@ namespace Application.Task
                 if (branches.Count == 0)
                     return Response<List<Branch>>.MakeResponse(true, "No Branches in System", 204); */
 
-                return await _dbContext.Tasks.ToListAsync();
+                return await _dbContext.Tasks
+                                .ProjectTo<TaskDTO>(_mapper.ConfigurationProvider)
+                                .ToListAsync();
             }
-
         }
     }
 }

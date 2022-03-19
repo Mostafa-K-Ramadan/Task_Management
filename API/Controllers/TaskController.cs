@@ -21,31 +21,35 @@ namespace API.Controllers
             _dbContext = dbContext;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllTask()
         {
             return Ok(await Mediator!.Send(new GetAll.Query()));
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public async Task<IActionResult> PostNewTask(TaskDTO task)
         {
             return Ok(await Mediator!.Send(new CreateTask.Command{Task = task}));
         } 
         
-        /*
-        [HttpGet]
-        public async Task<IActionResult> GetAllTask()
+        
+        [HttpPut]
+        public async Task<IActionResult> UpdateTaska(TaskDTO task)
         {
-            return Ok(await Mediator!.Send(new GetAll.Query()));
+            return Ok(await Mediator!.Send(new UpdateTask.Command{Task = task}));
         }  
-        [HttpGet]
-        public async Task<IActionResult> GetAllTask()
+
+        
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAllTask(int id)
         {
-            return Ok(await Mediator!.Send(new GetAll.Query()));
-        }  
+            return Ok(await Mediator!.Send(new GetById.Query{Id = id}));
+        } 
+        
+        /* 
         [HttpGet]
         public async Task<IActionResult> GetAllTask()
         {

@@ -39,6 +39,7 @@ namespace Application.Task
                 if (branches.Count == 0)
                     return Response<List<Branch>>.MakeResponse(true, "No Branches in System", 204); */
 
+                // for same user 
                 return await _dbContext.Tasks
                                 .ProjectTo<TaskDTO>(_mapper.ConfigurationProvider)
                                 .ToListAsync();

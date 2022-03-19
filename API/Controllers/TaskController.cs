@@ -21,6 +21,13 @@ namespace API.Controllers
             _dbContext = dbContext;
         }
 
+        
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSpecificTask(int id)
+        {
+            return Ok(await Mediator!.Send(new GetById.Query{Id = id}));
+        } 
+
         //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllTask()
@@ -35,26 +42,17 @@ namespace API.Controllers
             return Ok(await Mediator!.Send(new CreateTask.Command{Task = task}));
         } 
         
-        
         [HttpPut]
         public async Task<IActionResult> UpdateTaska(TaskDTO task)
         {
             return Ok(await Mediator!.Send(new UpdateTask.Command{Task = task}));
         }  
 
-        
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAllTask(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTask(int id)
         {
-            return Ok(await Mediator!.Send(new GetById.Query{Id = id}));
+            return Ok(await Mediator!.Send(new DeleteTask.Command{Id = id}));
         } 
-        
-        /* 
-        [HttpGet]
-        public async Task<IActionResult> GetAllTask()
-        {
-            return Ok(await Mediator!.Send(new GetAll.Query()));
-        }
-        */   
+          
     }
 }

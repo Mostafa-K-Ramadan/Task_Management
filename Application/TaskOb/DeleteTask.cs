@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Persistence;
 
-namespace Application.Task
+namespace Application.TaskOb
 {
     public class DeleteTask
     {

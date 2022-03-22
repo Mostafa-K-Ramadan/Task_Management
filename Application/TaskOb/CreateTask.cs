@@ -13,7 +13,7 @@ using Persistence;
 
 
 
-namespace Application.Task
+namespace Application.TaskOb
 {
     public class CreateTask
     {

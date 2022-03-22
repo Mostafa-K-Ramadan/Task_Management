@@ -1,7 +1,7 @@
 using Application.DTOs;
 using FluentValidation;
 
-namespace Application.Task
+namespace Application.TaskOb
 {
         public class TaskValidator : AbstractValidator<TaskDTO>
         {

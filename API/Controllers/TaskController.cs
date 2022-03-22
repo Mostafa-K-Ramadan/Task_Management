@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DTOs;
-using Application.Task;
+using Application.TaskOb;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ namespace API.Controllers
             _dbContext = dbContext;
         }
 
-        
+        [Authorize("IsCreatorTask")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSpecificTask(int id)
         {

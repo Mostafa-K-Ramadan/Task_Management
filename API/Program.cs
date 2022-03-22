@@ -1,11 +1,14 @@
 using API.Extensions;
 using API.Services;
-using Application.Task;
 using MediatR;
 using Infrastructure.Security;
 using Application.Interfaces;
 using Application.Core;
 using FluentValidation.AspNetCore;
+using Application.TaskOb;
+using Microsoft.AspNetCore.Authorization;
+using Application.Security;
+using static Application.Security.IsCreatorTask;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +51,16 @@ builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 // Add all identity services to our program
 builder.Services.AddIdentityServices(builder.Configuration);
                             
+            builder.Services.AddAuthorization(opt => 
+            {
+                opt.AddPolicy("IsCreatorTask", policy => 
+                {
+                    policy.Requirements.Add(new IsCreatorTask());
+                });
+            });
+
+builder.Services.AddTransient<IAuthorizationHandler, IsCreatorTaskHandler>();
+
 
 var app = builder.Build();
 

@@ -7,7 +7,7 @@ using AutoMapper;
 using MediatR;
 using Persistence;
 
-namespace Application.Task
+namespace Application.TaskOb
 {
     public class UpdateTask
     {
@@ -29,7 +29,7 @@ namespace Application.Task
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var task = await _dbContext.Tasks.FindAsync(request.Task.TaskId);
-                
+
                 var objTask = _mapper.Map<Domain.Task>(request.Task);
 
                 objTask.UserId = task.UserId;
@@ -37,7 +37,6 @@ namespace Application.Task
                  _mapper.Map(objTask, task);
                 
                 var result = await _dbContext.SaveChangesAsync() > 0;
-                Console.WriteLine(result);
 
                 if (result)
                     {

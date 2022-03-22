@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Task
+namespace Application.TaskOb
 {
     public class GetById
     {

@@ -12,3 +12,6 @@ Step Should Do Before Runnig the Application:
   1. dotnet ef migrations add InitialCreate -p Persistence -s API
   2. dotnet ef database update -p Persistence -s API
 
+Finally Run App using this command: dotnet watch run
+
+Enjoy !!
